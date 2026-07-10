@@ -4,39 +4,49 @@ from config import Config
 def parse_config(file_path: str) -> Config:
     """Read a maze configuration file and return a Config object."""
 
-    with open(file_path, "r", encoding="utf-8") as file:
-        lines = file.readlines()
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            lines = file.readlines()
+    except OSError as e:
+        raise ValueError(f"Could not open configuration file: {e}") from e
 
     width = None
     height = None
     entry = None
-    exit_position = None
+    exit_p = None
     output_file = None
     seed = None
     perfect = None
 
+    seen_keys = set()
+
     for line in lines:
         line = line.strip()
 
-        if line == "":
+        if not line or line.startswith("#"):
             continue
 
-        if line.startswith("#"):
-            continue
+        if "=" not in line:
+            raise ValueError(f"Invalid configuration line: {line}")
 
-        parts = line.split("=")
+        key, value = map(str.strip, line.split("=", 1))
 
-        if len(parts) != 2:
-            raise ValueError("Invalid configuration line.")
+        if key in seen_keys:
+            raise ValueError(f"Duplicate configuration key: {key}")
 
-        key = parts[0]
-        value = parts[1]
+        seen_keys.add(key)
 
         if key == "WIDTH":
-            width = int(value)
+            try:
+                width = int(value)
+            except ValueError as e:
+                raise ValueError("WIDTH must be an integer.") from e
 
         elif key == "HEIGHT":
-            height = int(value)
+            try:
+                height = int(value)
+            except ValueError as e:
+                raise ValueError("HEIGHT must be an integer.") from e
 
         elif key == "ENTRY":
             coordinates = value.split(",")
@@ -44,8 +54,11 @@ def parse_config(file_path: str) -> Config:
             if len(coordinates) != 2:
                 raise ValueError("Invalid ENTRY value.")
 
-            x = int(coordinates[0])
-            y = int(coordinates[1])
+            try:
+                x, y = map(int, map(str.strip, coordinates))
+            except ValueError as e:
+                raise ValueError("ENTRY coordinates must be integers.") from e
+
             entry = (x, y)
 
         elif key == "EXIT":
@@ -54,15 +67,24 @@ def parse_config(file_path: str) -> Config:
             if len(coordinates) != 2:
                 raise ValueError("Invalid EXIT value.")
 
-            x = int(coordinates[0])
-            y = int(coordinates[1])
-            exit_position = (x, y)
+            try:
+                x, y = map(int, map(str.strip, coordinates))
+            except ValueError as e:
+                raise ValueError("EXIT coordinates must be integers.") from e
+
+            exit_p = (x, y)
 
         elif key == "OUTPUT_FILE":
             output_file = value
 
+            if output_file == "":
+                raise ValueError("OUTPUT_FILE cannot be empty.")
+
         elif key == "SEED":
-            seed = int(value)
+            try:
+                seed = int(value)
+            except ValueError as e:
+                raise ValueError("SEED must be an integer.") from e
 
         elif key == "PERFECT":
             if value == "True":
@@ -79,18 +101,36 @@ def parse_config(file_path: str) -> Config:
         width,
         height,
         entry,
-        exit_position,
+        exit_p,
         output_file,
         perfect,
     ):
         raise ValueError("Missing required configuration values.")
 
+    if width <= 0:
+        raise ValueError("WIDTH must be greater than zero.")
+
+    if height <= 0:
+        raise ValueError("HEIGHT must be greater than zero.")
+
+    entry_x, entry_y = entry
+    exit_x, exit_y = exit_p
+
+    if not (0 <= entry_x < width and 0 <= entry_y < height):
+        raise ValueError("ENTRY is outside maze bounds.")
+
+    if not (0 <= exit_x < width and 0 <= exit_y < height):
+        raise ValueError("EXIT is outside maze bounds.")
+
+    if entry == exit_p:
+        raise ValueError("ENTRY and EXIT must be different.")
+
     return Config(
-        width,
-        height,
-        entry,
-        exit_position,
-        output_file,
-        perfect,
-        seed,
+        width=width,
+        height=height,
+        entry=entry,
+        exit_p=exit_p,
+        output_file=output_file,
+        perfect=perfect,
+        seed=seed,
     )
