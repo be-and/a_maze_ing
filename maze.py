@@ -81,3 +81,28 @@ class Maze:
                 neighbors.append(west)
 
         return neighbors
+
+    def get_accessible_neighbors(self, cell):
+        neighbors = []
+
+        if not cell.north:
+            if self.is_inside(cell.x, cell.y - 1):
+                north = self.get_cell(cell.x, cell.y - 1)
+                neighbors.append(north)
+
+        if not cell.east:
+            if self.is_inside(cell.x + 1, cell.y):
+                east = self.get_cell(cell.x + 1, cell.y)
+                neighbors.append(east)
+
+        if not cell.south:
+            if self.is_inside(cell.x, cell.y + 1):
+                south = self.get_cell(cell.x, cell.y + 1)
+                neighbors.append(south)
+
+        if not cell.west:
+            if self.is_inside(cell.x - 1, cell.y):
+                west = self.get_cell(cell.x - 1, cell.y)
+                neighbors.append(west)
+
+        return neighbors
