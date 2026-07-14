@@ -2,6 +2,8 @@ from typing import TextIO
 
 from maze import Cell, Maze
 
+from solver import MazeSolver
+
 
 def encode_cell(cell: Cell) -> str:
     """Convert a cell into its hexadecimal representation."""
@@ -41,5 +43,25 @@ def write_grid(file: TextIO, maze: Maze) -> None:
         file.write(encode_row(maze, y))
         file.write("\n")
 
-# def write_maze(maze, path, output_file):
-#     ...
+
+
+def write_maze(maze: Maze, output_file: str) -> None:
+    """Write the maze to the output file."""
+
+    solver = MazeSolver(maze)
+
+    path = solver.solve()
+
+    directions = solver.path_to_directions(path)
+
+    with open(output_file, "w", encoding="utf-8") as file:
+
+        write_grid(file, maze)
+
+        file.write("\n")
+
+        file.write(f"{maze.entry[0]},{maze.entry[1]}\n")
+
+        file.write(f"{maze.exit_p[0]},{maze.exit_p[1]}\n")
+
+        file.write(f"{directions}\n")
