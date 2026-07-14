@@ -15,6 +15,8 @@ class MazeGenerator:
             random.seed(seed)
 
     def generate(self):
+        self.maze.reset()
+
         entry_x, entry_y = self.maze.entry
         start = self.maze.get_cell(entry_x, entry_y)
 

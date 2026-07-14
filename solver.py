@@ -60,3 +60,26 @@ class MazeSolver:
         path.reverse()
 
         return path
+
+    def path_to_directions(self, path):
+        """Convert a path of coordinates into N, E, S, W directions."""
+
+        directions = []
+
+        for i in range(len(path) - 1):
+            x1, y1 = path[i]
+            x2, y2 = path[i + 1]
+
+            if x2 == x1 and y2 == y1 - 1:
+                directions.append("N")
+
+            elif x2 == x1 + 1 and y2 == y1:
+                directions.append("E")
+
+            elif x2 == x1 and y2 == y1 + 1:
+                directions.append("S")
+
+            elif x2 == x1 - 1 and y2 == y1:
+                directions.append("W")
+
+        return "".join(directions)

@@ -57,6 +57,17 @@ class Maze:
             first.north = False
             second.south = False
 
+    def reset(self):
+        """Restore every cell to its initial state."""
+
+        for row in self.grid:
+            for cell in row:
+                cell.north = True
+                cell.east = True
+                cell.south = True
+                cell.west = True
+                cell.visited = False
+
     def get_unvisited_neighbors(self, cell):
         neighbors = []
 
