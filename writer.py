@@ -44,7 +44,6 @@ def write_grid(file: TextIO, maze: Maze) -> None:
         file.write("\n")
 
 
-
 def write_maze(maze: Maze, output_file: str) -> None:
     """Write the maze to the output file."""
 

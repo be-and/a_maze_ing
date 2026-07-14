@@ -57,7 +57,9 @@ def parse_config(file_path: str) -> Config:
             try:
                 x, y = map(int, map(str.strip, coordinates))
             except ValueError as e:
-                raise ValueError("ENTRY coordinates must be integers.") from e
+                raise ValueError(
+                    "ENTRY coordinates must be integers."
+                ) from e
 
             entry = (x, y)
 
@@ -70,7 +72,9 @@ def parse_config(file_path: str) -> Config:
             try:
                 x, y = map(int, map(str.strip, coordinates))
             except ValueError as e:
-                raise ValueError("EXIT coordinates must be integers.") from e
+                raise ValueError(
+                    "EXIT coordinates must be integers."
+                ) from e
 
             exit_p = (x, y)
 
@@ -97,15 +101,23 @@ def parse_config(file_path: str) -> Config:
         else:
             raise ValueError(f"Unknown configuration key: {key}")
 
-    if None in (
-        width,
-        height,
-        entry,
-        exit_p,
-        output_file,
-        perfect,
-    ):
-        raise ValueError("Missing required configuration values.")
+    if width is None:
+        raise ValueError("Missing WIDTH.")
+
+    if height is None:
+        raise ValueError("Missing HEIGHT.")
+
+    if entry is None:
+        raise ValueError("Missing ENTRY.")
+
+    if exit_p is None:
+        raise ValueError("Missing EXIT.")
+
+    if output_file is None:
+        raise ValueError("Missing OUTPUT_FILE.")
+
+    if perfect is None:
+        raise ValueError("Missing PERFECT.")
 
     if width <= 0:
         raise ValueError("WIDTH must be greater than zero.")
