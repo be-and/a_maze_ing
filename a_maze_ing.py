@@ -14,10 +14,9 @@ def main():
 
     try:
         config_file = sys.argv[1]
-        # Read configuration
+
         config = parse_config(config_file)
 
-        # Create maze
         maze = Maze(
             config.width,
             config.height,
@@ -25,24 +24,75 @@ def main():
             config.exit_p,
         )
 
-        # Generate maze
         generator = MazeGenerator(
             maze,
             config.perfect,
             config.seed,
         )
+
         generator.generate()
 
         solver = MazeSolver(maze)
 
-        path = solver.solve()
+        show_path = True
 
-        render_maze(maze, path)
+        message = ""
 
-        write_maze(maze, config.output_file)
+        while True:
 
-        print(f"Maze written to {config.output_file}")
+            path = solver.solve()
 
+            if show_path:
+                render_maze(maze, path)
+            else:
+                render_maze(maze)
+
+
+            MENU = "\033[38;5;153m"
+            TITLE = "\033[38;5;217m"
+            RESET = "\033[0m"
+
+            print(f"\n{TITLE}┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓{RESET}")
+            print(f"{TITLE}┃{'A-MAZE-ING':^38}┃{RESET}")
+            print(f"{TITLE}┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛{RESET}")
+
+            print(f"{MENU}[1]{RESET} Generate new maze")
+            print(f"{MENU}[2]{RESET} Show / Hide path")
+            print(f"{MENU}[3]{RESET} Change wall colour")
+            print(f"{MENU}[4]{RESET} Save maze")
+            print(f"{MENU}[5]{RESET} Exit")
+
+            if message:
+                print(f"\n{message}")
+                message = ""
+
+            choice = input(f"\n{MENU}Choice: {RESET}")
+
+            if choice == "1":
+                generator.generate()
+                message = "New maze generated!"
+
+            elif choice == "2":
+                show_path = not show_path
+
+                if show_path:
+                    message = "Shortest path shown."
+                else:
+                    message = "Shortest path hidden."
+            
+            elif choice == "3":
+                message = "Not implemented yet."
+
+            elif choice == "4":
+                write_maze(maze, config.output_file)
+                message = f"Maze written to {config.output_file}"
+
+            elif choice == "5":
+                break
+
+            else:
+                message = "Invalid option."
+        
     except ValueError as e:
         print(f"Error: {e}")
 
