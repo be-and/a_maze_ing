@@ -6,6 +6,7 @@ WALL = "\033[38;5;228m"     # yellow
 ENTRY = "\033[38;5;157m"    # green
 EXIT = "\033[38;5;204m"     # red
 PATH = "\033[38;5;217m"     # pink
+PATTERN = "\033[38;5;39m"   # blue
 
 HORIZONTAL = "━━━"
 VERTICAL = "┃"
@@ -45,6 +46,9 @@ def render_row(
 
         elif position == maze.exit_p:
             content = f"{EXIT} X {RESET}"
+
+        elif position in maze.pattern_cells:
+            content = f"{PATTERN}███{RESET}"
 
         elif path is not None and position in path:
             content = f"{PATH} █ {RESET}"

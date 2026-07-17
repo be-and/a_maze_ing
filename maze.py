@@ -21,6 +21,8 @@ class Maze:
         self.exit_p = exit_p
         self.grid = []
 
+        self.pattern_cells = set()
+
         for y in range(height):
             row = []
 

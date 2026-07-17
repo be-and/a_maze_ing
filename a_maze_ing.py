@@ -47,7 +47,6 @@ def main():
             else:
                 render_maze(maze)
 
-
             MENU = "\033[38;5;153m"
             TITLE = "\033[38;5;217m"
             RESET = "\033[0m"
@@ -79,7 +78,7 @@ def main():
                     message = "Shortest path shown."
                 else:
                     message = "Shortest path hidden."
-            
+
             elif choice == "3":
                 message = "Not implemented yet."
 
@@ -92,7 +91,7 @@ def main():
 
             else:
                 message = "Invalid option."
-        
+
     except ValueError as e:
         print(f"Error: {e}")
 
