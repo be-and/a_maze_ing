@@ -69,12 +69,13 @@ class MazeGenerator:
                 west = self.maze.get_cell(x - 1, y)
                 west.east = True
 
-            for row in self.maze.grid:
-                for cell in row:
-                    cell.visited = False
+        for row in self.maze.grid:
+            for cell in row:
+                cell.visited = False
 
-            if not self.perfect:
-                self.reduce_dead_ends()
+        if not self.perfect:
+            self.reduce_dead_ends()
+            # print("Dead ends:", self.count_dead_ends())
 
     def is_dead_end(self, cell):
 
@@ -94,56 +95,65 @@ class MazeGenerator:
 
         return open_sides == 1
 
+    def count_dead_ends(self):
+        count = 0
+
+        for row in self.maze.grid:
+            for cell in row:
+                if self.is_dead_end(cell):
+                    count += 1
+
+        return count
+
     def reduce_dead_ends(self):
 
-        for y in range(self.maze.height):
+        while self.count_dead_ends() > 2:
 
-            for x in range(self.maze.width):
+            removed = False
 
-                cell = self.maze.get_cell(x, y)
+            for y in range(self.maze.height):
 
-                if not self.is_dead_end(cell):
-                    continue
+                for x in range(self.maze.width):
 
-                possible_neighbors = []
+                    cell = self.maze.get_cell(x, y)
 
-                if self.maze.is_inside(x + 1, y):
+                    if not self.is_dead_end(cell):
+                        continue
 
-                    east = self.maze.get_cell(x + 1, y)
+                    possible_neighbors = []
 
-                    if cell.east:
+                    if self.maze.is_inside(x + 1, y):
+                        east = self.maze.get_cell(x + 1, y)
+                        if cell.east:
+                            possible_neighbors.append(east)
 
-                        possible_neighbors.append(east)
+                    if self.maze.is_inside(x, y + 1):
+                        south = self.maze.get_cell(x, y + 1)
+                        if cell.south:
+                            possible_neighbors.append(south)
 
-                if self.maze.is_inside(x, y + 1):
+                    if self.maze.is_inside(x - 1, y):
+                        west = self.maze.get_cell(x - 1, y)
+                        if cell.west:
+                            possible_neighbors.append(west)
 
-                    south = self.maze.get_cell(x, y + 1)
+                    if self.maze.is_inside(x, y - 1):
+                        north = self.maze.get_cell(x, y - 1)
+                        if cell.north:
+                            possible_neighbors.append(north)
 
-                    if cell.south:
+                    if possible_neighbors:
+                        neighbor = random.choice(possible_neighbors)
+                        self.maze.remove_wall(cell, neighbor)
 
-                        possible_neighbors.append(south)
+                        removed = True
+                        break
 
-                if self.maze.is_inside(x - 1, y):
+                if removed:
+                    break
 
-                    west = self.maze.get_cell(x - 1, y)
-
-                    if cell.west:
-
-                        possible_neighbors.append(west)
-
-                if self.maze.is_inside(x, y - 1):
-
-                    north = self.maze.get_cell(x, y - 1)
-
-                    if cell.north:
-
-                        possible_neighbors.append(north)
-
-                if possible_neighbors:
-
-                    neighbor = random.choice(possible_neighbors)
-
-                    self.maze.remove_wall(cell, neighbor)
+            if not removed:
+                break
 
     def create_42_pattern(self) -> None:
         """Reserve the cells used to draw the '42'."""
@@ -154,12 +164,11 @@ class MazeGenerator:
             print("Maze too small to draw the 42 pattern.")
             return
 
-        patter_width = 7
+        pattern_width = 7
         pattern_height = 5
 
-        start_x = (self.maze.width - patter_width) // 2
+        start_x = (self.maze.width - pattern_width) // 2
         start_y = (self.maze.height - pattern_height) // 2
-        start_y = self.maze.height // 2 - 2
 
         four = [
             (1, 0), (3, 0),
