@@ -3,6 +3,7 @@ from typing import TextIO
 from mazegen import Maze, MazeSolver
 from mazegen.maze import Cell
 
+
 def encode_cell(cell: Cell) -> str:
     """Convert a cell into its hexadecimal representation."""
 

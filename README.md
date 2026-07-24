@@ -2,41 +2,28 @@
 
 # A-Maze-ing
 
-## Description
+# DESCRIPTION
 
-A-Maze-ing is a Python project that generates random mazes from a configuration file.
+A-Maze-ing is a Python application that generates random mazes from a configuration file. It supports both perfect mazes and Pac-Man style mazes, computes the shortest path between two points, exports the maze using hexadecimal wall encoding, and provides an ASCII visualization in the terminal.
 
-The program supports two generation modes:
+## Features
 
-- **Perfect maze** (`PERFECT=True`): exactly one unique path exists between any two cells.
-- **Pac-Man maze** (`PERFECT=False`): multiple independent routes are created, making the maze suitable for a Pac-Man style game.
+- Generates perfect and non-perfect mazes
+- Uses Iterative Backtracking (DFS)
+- Computes the shortest path with BFS
+- Exports hexadecimal maze files
+- Supports configuration files
+- Renders the maze in ASCII
+- Validates output with the provided analyzer
 
-The generated maze is written to a text file using hexadecimal wall encoding and includes the shortest path from the entrance to the exit.
 
-The generated maze can also be visualized directly in the terminal using an ASCII renderer, making it easier to inspect the maze structure and solution.
-
----
-
-# Features
-
-- Maze generation using Iterative Backtracking (Depth-First Search)
-- Random generation with optional seed
-- Perfect and non-perfect maze generation
-- Shortest path calculation using Breadth-First Search (BFS)
-- Hexadecimal maze encoding
-- Configuration file support
-- ASCII maze visualization
-- Automatic maze validation with the provided analyzer
-
----
-
-# Instructions
+# INSTRUCTIONS
 
 ## Requirements
 
 - Python 3.10 or later
 
-## Run the program
+## Running the Application
 
 ```bash
 python3 a_maze_ing.py config.txt
@@ -44,9 +31,9 @@ python3 a_maze_ing.py config.txt
 
 Replace `config.txt` with any valid configuration file.
 
----
 
-# Configuration File Format
+
+## Configuration File Format
 
 The configuration file contains one `KEY=VALUE` pair per line.
 
@@ -74,13 +61,13 @@ SEED=42
 | PERFECT | Generate a perfect maze or a Pac-Man maze |
 | SEED | Optional random seed |
 
----
 
-# Maze Generation Algorithm
 
-This project uses the **Iterative Backtracking (Depth-First Search)** algorithm.
+## Maze Generation Algorithm
 
-Algorithm overview:
+The project uses the **Iterative Backtracking (Depth-First Search)** algorithm.
+
+The maze is generated using the following steps:
 
 1. Start from the entry cell.
 2. Mark it as visited.
@@ -91,31 +78,16 @@ Algorithm overview:
 
 When `PERFECT=False`, additional walls are removed to reduce dead ends and create multiple independent routes.
 
----
+## Why DFS?
 
-# Why DFS?
+Iterative Backtracking (Depth-First Search) was chosen because it efficiently generates connected mazes while ensuring that every cell is reachable. An explicit stack is used instead of recursion, avoiding recursion depth limitations and providing better control over the generation process. This approach naturally produces perfect mazes and can be extended to create additional routes for the non-perfect mode.
 
-Iterative Backtracking was chosen because:
 
-I used iterative Depth-First Search because it efficiently generates a perfect maze by exploring one path as far as possible before backtracking. I implemented it iteratively with an explicit stack instead of recursion to avoid recursion depth limits and to have better control over the algorithm. It also satisfies the project requirement to generate a connected maze where every cell is reachable.
+## Maze Solving
 
----
+The shortest path is computed using Breadth-First Search (BFS), which guarantees the shortest path in an unweighted grid. Once found, the path is converted to the required direction format (N, E, S, W) before being written to the output file.
 
-# Maze Solving
-
-The shortest path is calculated using **Breadth-First Search (BFS)**.
-
-BFS guarantees the shortest path in an unweighted grid.
-
-The resulting coordinate path is converted into the required direction format:
-
-```
-N E S W
-```
-
-before being written to the output file.
-
-# Iterative BFS Algorithm (Maze Solver)
+## Maze solver: Iterative BFS Algorithm
 
 1. Start from the entry cell.
 2. Mark it as visited and add it to a queue.
@@ -127,9 +99,8 @@ before being written to the output file.
 8. Repeat until the exit is found or the queue becomes empty.
 9. Reconstruct the shortest path by following the parent links from the exit back to the  entry.
 
----
 
-# Output File Format
+## Output File Format
 
 The output file contains:
 
@@ -151,69 +122,125 @@ Example:
 SSEEENNW...
 ```
 
----
 
-# Reusable Code
 
-The maze generation logic is separated into reusable modules.
+## Reusable Code
 
-Main reusable classes:
+The maze generation logic is distributed as a reusable Python package named `mazegen`. The package contains the core classes responsible for creating, generating, and solving mazes independently of the main application.
 
-- `Maze`
-- `MazeGenerator`
-- `MazeSolver`
+The package is organized into the following modules:
 
-These modules can be reused independently in future projects.
+- `maze.py`
+- `maze_generator.py`
+- `solver.py`
 
----
+Keeping the maze logic separate from the configuration parser, renderer, and output writer allows it to be reused in other Python projects.
 
-# Team Responsibilities
+## Importing the Package
 
-## \<nakhatoo\>
+The package exposes its main classes through a simple public API:
+
+```python
+from mazegen import Maze, MazeGenerator, MazeSolver
+```
+
+A `Maze` object can be generated using `MazeGenerator` and then passed to `MazeSolver` to compute the shortest path. Since the package is independent of the rest of the application, it can also be integrated into other projects.
+
+
+## Building and Testing the Package
+
+The package can be built and tested in a clean Python environment using the following steps:
+
+```bash
+# Remove previous build artifacts
+rm -rf build dist *.egg-info
+
+# Build the package
+python3 -m build
+
+# Verify the generated distribution files
+ls dist
+
+# Create and activate a virtual environment
+python3 -m venv test_env
+source test_env/bin/activate
+
+# Install the package
+pip install dist/mazegen-1.0.0-py3-none-any.whl
+
+# Leave the project directory
+cd ..
+
+# Start Python
+python3
+```
+
+Inside the Python interpreter:
+
+```python
+import mazegen
+
+print(mazegen.__file__)
+
+from mazegen import Maze, MazeGenerator, MazeSolver
+
+print(Maze)
+print(MazeGenerator)
+print(MazeSolver)
+
+exit()
+```
+
+Return to the project directory and run the application:
+
+```bash
+cd a_maze_ing
+make run
+```
+
+## Team Responsibilities
+
+### nakhatoo
 
 - Maze structure
 - Cell implementation
 - DFS maze generation
-- BFS maze solver
+- Maze solver
 - Documentation
 - Project integration
 - Testing
 
-## \<bandrade\>
+### bandrade
 
 - Configuration parser
 - Rendering
 - Output writer
 - ASCII visualization
 - Documentation
-- Project integration
+- Visuals
 - Testing
 
----
 
-# Testing
+## Testing
 
 The project was tested by:
 
-- generating mazes of multiple sizes,
-- validating perfect and non-perfect generation,
-- verifying shortest paths,
-- checking hexadecimal output,
-- running the provided `maze_analyzer.py`.
+- Generating mazes of multiple sizes,
+- Validating perfect and non-perfect generation,
+- Checking hexadecimal outputs,
+- Running the provided `maze_analyzer.py`.
 
----
 
-# AI Usage
 
-AI was used as an assistant for:
+## AI Usage
 
-- understanding project requirements,
-- understanding algorithms,
-- explaining Python concepts.
+AI tools were used to support the development process by:
 
----
+- clarifying project requirements,
+- explaining Python concepts,
+- answering implementation-related questions.
 
-# Resources
+# RESOURCES
 
 - Python Documentation  
   https://docs.python.org/3/
@@ -233,11 +260,10 @@ AI was used as an assistant for:
 - Recursive Backtracking Maze Generation
   https://en.wikipedia.org/wiki/Maze_generation_algorithm
 
----
 
-# Project Planning
+## Project Planning
 
-Initial plan:
+### Initial plan:
 
 - Design maze structure
 - Implement DFS generator
@@ -247,8 +273,6 @@ Initial plan:
 - Add visualization
 - Test and integrate modules
 
-Project evolution:
+### Development Process
 
 The work was divided between two team members. One member focused on maze generation and solving, while the other implemented configuration parsing, output generation, and visualization. After individual development, both parts were integrated and tested together.
-
----
