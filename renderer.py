@@ -16,17 +16,6 @@ PATTERN = "\033[38;5;117m"   # blue
 HORIZONTAL = "━━━"
 VERTICAL = "┃"
 
-RESET = "\033[0m"
-
-WALL = "\033[38;5;228m"     # yellow
-ENTRY = "\033[38;5;157m"    # green
-EXIT = "\033[38;5;204m"     # red
-PATH = "\033[38;5;217m"     # pink
-PATTERN = "\033[38;5;39m"   # blue
-
-HORIZONTAL = "━━━"
-VERTICAL = "┃"
-
 
 def render_top(maze: Maze, wall: str) -> None:
     """Draw the top border of the maze."""
@@ -41,11 +30,7 @@ def render_top(maze: Maze, wall: str) -> None:
         else:
             top += "┳"
 
-<<<<<<< HEAD
-    print(f"{WALL}{top}{RESET}")
-=======
     print(f"{wall}{top}{RESET}")
->>>>>>> 3ce77e3 (final version)
 
 
 def render_row(
@@ -56,11 +41,7 @@ def render_row(
 ) -> None:
     """Draw one row of maze cells."""
 
-<<<<<<< HEAD
-    line = f"{WALL}{VERTICAL}{RESET}"
-=======
     line = f"{wall}{VERTICAL}{RESET}"
->>>>>>> 3ce77e3 (final version)
 
     for cell in maze.grid[y]:
 
@@ -84,11 +65,7 @@ def render_row(
         line += content
 
         if cell.east:
-<<<<<<< HEAD
-            line += f"{WALL}{VERTICAL}{RESET}"
-=======
             line += f"{wall}{VERTICAL}{RESET}"
->>>>>>> 3ce77e3 (final version)
         else:
             line += " "
 
@@ -121,11 +98,7 @@ def render_bottom(maze: Maze, y: int, wall: str) -> None:
         else:
             bottom += middle
 
-<<<<<<< HEAD
-    print(f"{WALL}{bottom}{RESET}")
-=======
     print(f"{wall}{bottom}{RESET}")
->>>>>>> 3ce77e3 (final version)
 
 
 def render_maze(

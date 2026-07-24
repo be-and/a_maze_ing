@@ -19,11 +19,7 @@ The generated maze can also be visualized directly in the terminal using an ASCI
 
 # Features
 
-<<<<<<< HEAD
-- Maze generation using Recursive Backtracking (Depth-First Search)
-=======
 - Maze generation using Iterative Backtracking (Depth-First Search)
->>>>>>> 3ce77e3 (final version)
 - Random generation with optional seed
 - Perfect and non-perfect maze generation
 - Shortest path calculation using Breadth-First Search (BFS)
@@ -82,11 +78,7 @@ SEED=42
 
 # Maze Generation Algorithm
 
-<<<<<<< HEAD
-This project uses the **Recursive Backtracking (Depth-First Search)** algorithm.
-=======
 This project uses the **Iterative Backtracking (Depth-First Search)** algorithm.
->>>>>>> 3ce77e3 (final version)
 
 Algorithm overview:
 
@@ -103,18 +95,9 @@ When `PERFECT=False`, additional walls are removed to reduce dead ends and creat
 
 # Why DFS?
 
-<<<<<<< HEAD
-Recursive Backtracking was chosen because:
-
-- it is simple to implement,
-- it generates perfect mazes efficiently,
-- it produces natural-looking corridors,
-- it is well suited for grid-based maze generation.
-=======
 Iterative Backtracking was chosen because:
 
 I used iterative Depth-First Search because it efficiently generates a perfect maze by exploring one path as far as possible before backtracking. I implemented it iteratively with an explicit stack instead of recursion to avoid recursion depth limits and to have better control over the algorithm. It also satisfies the project requirement to generate a connected maze where every cell is reachable.
->>>>>>> 3ce77e3 (final version)
 
 ---
 
@@ -132,8 +115,6 @@ N E S W
 
 before being written to the output file.
 
-<<<<<<< HEAD
-=======
 # Iterative BFS Algorithm (Maze Solver)
 
 1. Start from the entry cell.
@@ -146,7 +127,6 @@ before being written to the output file.
 8. Repeat until the exit is found or the queue becomes empty.
 9. Reconstruct the shortest path by following the parent links from the exit back to the  entry.
 
->>>>>>> 3ce77e3 (final version)
 ---
 
 # Output File Format
@@ -202,10 +182,7 @@ These modules can be reused independently in future projects.
 ## \<bandrade\>
 
 - Configuration parser
-<<<<<<< HEAD
-=======
 - Rendering
->>>>>>> 3ce77e3 (final version)
 - Output writer
 - ASCII visualization
 - Documentation

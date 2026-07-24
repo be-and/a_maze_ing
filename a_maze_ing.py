@@ -1,22 +1,12 @@
 import sys
 from parser import parse_config
-<<<<<<< HEAD
-from maze import Maze
-from maze_generator import MazeGenerator
-from solver import MazeSolver
-=======
 from mazegen import Maze, MazeGenerator, MazeSolver
->>>>>>> 3ce77e3 (final version)
 from writer import write_maze
 from renderer import render_maze
 
 
-<<<<<<< HEAD
-def main():
-=======
 def main() -> None:
     """Run the maze application."""
->>>>>>> 3ce77e3 (final version)
     if len(sys.argv) != 2:
         print("Usage: python3 a_maze_ing.py config.txt")
         return
@@ -47,46 +37,30 @@ def main() -> None:
 
         message = ""
 
-<<<<<<< HEAD
-=======
         wall_color = "yellow"
 
->>>>>>> 3ce77e3 (final version)
         while True:
 
             path = solver.solve()
 
             if show_path:
-<<<<<<< HEAD
-                render_maze(maze, path)
-            else:
-                render_maze(maze)
-=======
                 render_maze(maze, path, wall_color)
             else:
                 render_maze(maze, None, wall_color)
->>>>>>> 3ce77e3 (final version)
 
             MENU = "\033[38;5;153m"
             TITLE = "\033[38;5;217m"
             RESET = "\033[0m"
 
-<<<<<<< HEAD
-=======
             current_colour = wall_color.capitalize()
 
->>>>>>> 3ce77e3 (final version)
             print(f"\n{TITLE}┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓{RESET}")
             print(f"{TITLE}┃{'A-MAZE-ING':^38}┃{RESET}")
             print(f"{TITLE}┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛{RESET}")
 
             print(f"{MENU}[1]{RESET} Generate new maze")
             print(f"{MENU}[2]{RESET} Show / Hide path")
-<<<<<<< HEAD
-            print(f"{MENU}[3]{RESET} Change wall colour")
-=======
             print(f"{MENU}[3]{RESET} Change wall colour ({current_colour})")
->>>>>>> 3ce77e3 (final version)
             print(f"{MENU}[4]{RESET} Save maze")
             print(f"{MENU}[5]{RESET} Exit")
 
@@ -109,9 +83,6 @@ def main() -> None:
                     message = "Shortest path hidden."
 
             elif choice == "3":
-<<<<<<< HEAD
-                message = "Not implemented yet."
-=======
 
                 print("\nChoose wall colour:\n")
 
@@ -140,7 +111,6 @@ def main() -> None:
                     continue
 
                 message = f"Wall colour changed to {wall_color.capitalize()}."
->>>>>>> 3ce77e3 (final version)
 
             elif choice == "4":
                 write_maze(maze, config.output_file)
