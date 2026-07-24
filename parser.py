@@ -2,7 +2,7 @@ from config import Config
 
 
 def parse_config(file_path: str) -> Config:
-    """Read a maze configuration file and return a Config object."""
+    """Parse the maze configuration file."""
 
     try:
         with open(file_path, "r", encoding="utf-8") as file:
@@ -30,6 +30,7 @@ def parse_config(file_path: str) -> Config:
             raise ValueError(f"Invalid configuration line: {line}")
 
         key, value = map(str.strip, line.split("=", 1))
+        key = key.upper()
 
         if key in seen_keys:
             raise ValueError(f"Duplicate configuration key: {key}")

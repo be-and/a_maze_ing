@@ -1,9 +1,7 @@
 from typing import TextIO
 
-from maze import Cell, Maze
-
-from solver import MazeSolver
-
+from mazegen import Maze, MazeSolver
+from mazegen.maze import Cell
 
 def encode_cell(cell: Cell) -> str:
     """Convert a cell into its hexadecimal representation."""
